@@ -21,28 +21,27 @@ return require('packer').startup(function(use)
     end
   }
 
--- LSP Support
-use {
-  'neovim/nvim-lspconfig',
-  requires = {
-    { 'williamboman/mason.nvim' },
-    { 'williamboman/mason-lspconfig.nvim' },
-  },
-  config = function()
-    require("mason").setup()
-    require("mason-lspconfig").setup()
+  -- LSP Support via mason + lspconfig
+  use {
+    'neovim/nvim-lspconfig',
+    requires = {
+      { 'williamboman/mason.nvim' },
+      { 'williamboman/mason-lspconfig.nvim' },
+    },
+    config = function()
+      require("mason").setup()
+      require("mason-lspconfig").setup()
 
-    local lspconfig = require("lspconfig")
+      local lspconfig = require("lspconfig")
+      local servers = { "clangd", "lua_ls", "tsserver" }
 
-    -- Example: enable Lua, JavaScript/TypeScript
-    local servers = { "lua_ls", "tsserver" }
-    for _, server in ipairs(servers) do
-      lspconfig[server].setup({})
+      for _, server in ipairs(servers) do
+        lspconfig[server].setup({})
+      end
     end
-  end
-}
+  }
 
-  -- Treesitter for syntax highlighting
+  -- Treesitter for better syntax highlighting
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -61,5 +60,9 @@ use {
       }
     end
   }
+
+  use { 'theprimeagen/harpoon'}
+
+
 end)
 
